@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+infile="$1"
+if [ -z "$infile" ]; then
+  infile="ca"
+fi
+arg1="$2"
+if [ -z "$arg1" ]; then
+  arg1="t0.8"
+fi
+arg2="$3"
+if [ -z "$arg2" ]; then
+  arg2="e0.005"
+fi
+
+time ./sp_stsj "/$infile" "-$arg1" "-$arg2" -c "${@:4}"

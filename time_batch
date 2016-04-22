@@ -1,0 +1,47 @@
+#!/bin/bash
+
+infiles="$1"
+if [ -z "$infiles" ]; then
+  infiles='ca au us'
+fi
+args="$2"
+if [ -z "$args" ]; then
+  args='t0.8 e0.005'
+fi
+options="${@:3}"
+cd "$(dirname "$0")"
+
+date
+echo
+
+for infile in $infiles ; do
+  if [ -z "$options" ] ; then
+    echo "$infile $args"
+    echo
+    echo '1st'
+    ./time_sp_stsj "$infile" $args
+    echo
+    echo '2nd'
+    ./time_sp_stsj "$infile" $args
+    echo
+    echo '3rd'
+    ./time_sp_stsj "$infile" $args
+    echo
+    echo
+  else
+    for option in $options ; do
+      echo "$infile $args $option"
+      echo
+      echo '1st'
+      ./time_sp_stsj "$infile" $args $option
+      echo
+      echo '2nd'
+      ./time_sp_stsj "$infile" $args $option
+      echo
+      echo '3rd'
+      ./time_sp_stsj "$infile" $args $option
+      echo
+      echo
+    done
+  fi
+done

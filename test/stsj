@@ -1,0 +1,25 @@
+#!/bin/bash
+
+cd "$(dirname "$0")/.."
+basedir="$(pwd)"
+cd 'test/cases'
+
+ls test* | while read testcase; do
+  ls expect_${testcase}_* | while read expected; do
+    echo "Testing ${testcase} with ${expected} ..."
+    args="$(echo "$expected" | sed -e "s/expect_${testcase}//g" | sed -e 's/_/ -/g')"
+    echo "Command: python '${basedir}/pystsj/stsj_test.py' -n${args} '${basedir}/test/cases/${testcase}'" "$@"
+    if python "${basedir}/pystsj/stsj_test.py" -n${args} "${basedir}/test/cases/${testcase}" "$@" | diff -u "${expected}" - ; then
+      echo 'Result: passed'
+      echo
+    else
+      echo 'Result: failed'
+      exit 1
+    fi
+  done
+  [ $? -eq 0 ] || exit 1
+  echo
+done
+[ $? -eq 0 ] || exit 1
+
+echo "All passed!"

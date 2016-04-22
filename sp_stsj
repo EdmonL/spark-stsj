@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cwd="$(pwd)"
+cd "$(dirname "$0")"
+scriptdir="$(pwd)/pystsj"
+pyfiles="$scriptdir/util.py,$scriptdir/sputil.py,$scriptdir/ppj.py,$scriptdir/probe.py,$scriptdir/verify.py"
+cd "$cwd"
+
+spark-submit --master spark://id415m01:7077 --py-files "$pyfiles" "$scriptdir/stsj.py" "$@"
